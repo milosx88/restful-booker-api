@@ -63,6 +63,7 @@ export class ApiTasks extends Helper {
     payload = await authPayload(username, password);
     response = await (await request.newContext()).post(URL, { data: payload, headers: contentTypeHeaders });
     jsonResponse = await response.json();
+    console.log(jsonResponse);
     expect(jsonResponse.reason).toEqual('Bad credentials');
   }
 
