@@ -1,6 +1,6 @@
 /**
  * I created one test which includes all CRUD operations in order to create full flow from create to delete phase
- * Also, you have each request in separate test
+ * Note that the whole flow can be splitted into smaller tests (test for each CRUD operation) with a little effort, if needed
  */
 
 import { expect, test } from '@playwright/test';
