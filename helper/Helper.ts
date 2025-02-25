@@ -2,7 +2,6 @@
  * This file includes some useful methods to generate testing data
  */
 
-import { faker } from '@faker-js/faker';
 import { animals, names, uniqueNamesGenerator } from 'unique-names-generator';
 
 export class Helper {

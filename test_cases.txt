@@ -1,0 +1,203 @@
+1) User should be able to generate auth token with valid credentials
+
+Summary:
+User is able to generate authentication token by using valid username and password as inputs.
+
+Steps:
+1 - Provide valid username and password
+2 - Send POST request to /auth endpoint with the following JSON body: 
+{
+    "username" : "<username>",
+    "password" : "<password>"
+}
+3 - Validate the response code is 200 and the response body, token should be generated
+
+Assumptions:
+- The API endpoint for generating the token is /auth
+- The API requires only a valid username and password pair
+- The token has an expiration time of 15min
+- The API returns a 200 status code for successful token
+
+Limitations:
+- The test assumes that the username and password are valid and exist in the DB
+- The test doesn't cover scenarions that include performance or load protection
+
+----------------------------------------------------------------
+2) User should not be able to generate auth token with non-valid credentials
+
+Summary:
+User is not able to generate a token by using non-valid username and password as inputs, the proper error message should be generated instead.
+This test should ensure that the authentication token API handles invalid inputs correctly.
+
+Steps:
+1 - Provide non-valid username or/and password
+2 - Send POST request to /auth endpoint with the following JSON body: 
+{
+    "username" : "<username>",
+    "password" : "<password>"
+}
+3 - Validate the response code is not 200 and the response body contains error message
+
+Assumptions:
+- The API endpoint for generating the token is /auth
+- The API returns a 401 unauthorized status code
+- The API doesn't lock accounts after a certain number of failed attempts
+
+Limitations:
+- The test doesn't cover scenarions where the account is locked or disabled
+- The test doesn't valid the response time or performance under failure conditions.
+
+Note: This test case should cover scenarions where the JSON body is not correct or username or password completely is missing from it
+----------------------------------------------------------------
+3) User should be able to create a new booking
+
+Summary:
+The test case ensures that user is able to create a new booking with provided valid details.
+
+Steps:
+1 - Provide a valid auth token
+2 - Send POST request to /booking endpoint with the following JSON body and headers:
+{
+    "firstname" : "Jim",
+    "lastname" : "Brown",
+    "totalprice" : 111,
+    "depositpaid" : true,
+    "bookingdates" : {
+        "checkin" : "2018-01-01",
+        "checkout" : "2019-01-01"
+    },
+    "additionalneeds" : "Breakfast"
+}
+headers: 
+Content-Type: application/json
+Accept: application/json
+Cookie: token=abc123
+3 - Validate the response code is 200 and the response body contains all necessary details
+
+Assumptions:
+- The API endpoint for generating the token is /booking
+- The API requires authentication via token in the header
+- The request body must contain all required fields and types
+- The API returns a 200 OK status for successful attempt
+
+Limitation:
+- The test doesn't cover the security side of the API as token validation
+- The test assumes that the server is stable and can handle requests
+- The test doesn't validate the persistance of the created booking in the DB
+----------------------------------------------------------------
+4) User should be able to get a booking details
+
+Summary:
+The test case ensures that user is able to get a details for specific booking.
+
+Steps:
+1 - Provide a valid auth token
+2 - Send GET request to /booking/<bookingId> endpoint with the following headers:
+Accept: application/json
+Cookie: token=abc123
+3 - Validate the response code is 200 and the response body contains all booking details
+
+Assumptions:
+- The API endpoint for generating the token is /booking/<id>, where <id> is the unique identifier of the booking
+- The API requires authentication via token in the header
+- The booking exists in the DB for the given ID
+- The API returns a 200 OK status for successful attempt
+
+Limitation:
+- The test doesn't cover the security side of the API as token validation
+- The test assumes that the server is stable and can handle requests
+- The test doesn't cover scenarions that include performances or load protection
+----------------------------------------------------------------
+5) User should be able to update an existing booking using PUT method
+
+Summary:
+The test case ensures that user is able to update an existing booking by providing valid details.
+
+Steps:
+1 - Provide a valid auth token
+2 - Send PUT request to /booking/<id> endpoint with the following JSON body and headers:
+{
+    "firstname" : "Jim_updated",
+    "lastname" : "Brown_updated",
+    "totalprice" : 211,
+    "depositpaid" : true,
+    "bookingdates" : {
+        "checkin" : "2018-01-01",
+        "checkout" : "2019-01-01"
+    },
+    "additionalneeds" : "Breakfast"
+}
+headers: 
+Content-Type: application/json
+Accept: application/json
+Cookie: token=abc123
+3 - Validate the response code is 200 and the response body contains all updated details
+
+Assumptions:
+- The API endpoint for generating the token is /booking/<id>, where <id> is the unique identifier of the booking
+- The API requires authentication via token in the header
+- The booking exists in the DB for the given ID
+- The API returns a 200 OK status for successful attempt
+- The request body must contain the fields that need to be updated
+- The API returns a 404 status if booking doesn't exist
+
+Limitation:
+- The test doesn't cover the security side of the API as token validation
+- The test assumes that the server is stable and can handle requests
+- The test doesn't cover scenarions that include performances or load protection
+----------------------------------------------------------------
+6) User should be able to update an existing booking using PATCH method
+
+Summary:
+The test case ensures that user is able to update an existing booking by providing a valid and specific details that need to be updated.
+
+Steps:
+1 - Provide a valid auth token
+2 - Send PATCH request to /booking/<id> endpoint with the following JSON body and headers:
+{
+    "firstname" : "Jim_patched",
+    "lastname" : "Brown_patched",
+}
+headers: 
+Content-Type: application/json
+Accept: application/json
+Cookie: token=abc123
+3 - Validate the response code is 200 and the response body contains all updated details (in this case new first and last name)
+
+Assumptions:
+- The API endpoint for generating the token is /booking/<id>, where <id> is the unique identifier of the booking
+- The API requires authentication via token in the header
+- The booking exists in the DB for the given ID
+- The API returns a 200 OK status for successful attempt
+- The request body must contain the fields that need to be updated
+- The API returns a 404 status if booking doesn't exist
+
+Limitation:
+- The test doesn't cover the security side of the API as token validation
+- The test assumes that the server is stable and can handle requests
+- The test doesn't cover scenarions that include performances or load protection
+----------------------------------------------------------------
+7) User should be able to delete a booking
+
+Summary:
+The test case ensures that user is able to delete a booking by providing booking ID.
+
+Steps:
+1 - Provide a valid auth token
+2 - Send DELETE request to /booking/<id> endpoint with the following headers:
+Content-Type: application/json
+Cookie: token=abc123
+3 - Validate the response code is 201
+
+Assumptions:
+- The API endpoint for generating the token is /booking/<id>, where <id> is the unique identifier of the booking
+- The API requires authentication via token in the header
+- The booking exists in the DB for the given ID
+- The API returns a 201 OK status for successful attempt
+- The API returns a 404 status if booking doesn't exist
+
+Limitation:
+- The test doesn't cover the security side of the API as token validation
+- The test assumes that the server is stable and can handle requests
+- The test doesn't validate the persistance of deleted booking in DB
+- The test doesn't cover scenarions that include rules that may prevent deletion
