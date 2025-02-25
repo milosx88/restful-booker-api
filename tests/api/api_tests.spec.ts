@@ -19,7 +19,7 @@ test.describe('Pet CRUD operations', () => {
     authToken = await apiTasks.generateAuthToken(USER_CREDS.USERNAME, USER_CREDS.PASSWORD);
   });
 
-  test.only('Validates incorrect username or/and password', async () => {
+  test('Validates incorrect username or/and password', async () => {
     await apiTasks.validateBadCredentials(USER_CREDS.WRONG_USERNAME, USER_CREDS.WRONG_PASSWORD);
   });
 
