@@ -83,7 +83,7 @@ export class ApiTasks extends Helper {
 
   /**
    * Method gets booking details by provided bookingId
-   * @param bookingId - Desired BookingID
+   * @param bookingId - Desired bookingId
    * @param token - auth token
    * @returns - booking details: firstName and lastName
    */
@@ -144,7 +144,8 @@ export class ApiTasks extends Helper {
 
   /**
    * Method deletes pet by provided PetId
-   * @param petId - Desired PetId
+   * @param petId - Desired bookingId
+   * @param token - auth token
    */
   async deleteBookingById(bookingId: number, token: string) {
     URL = `${BASE_URL}/booking/${bookingId}`;
@@ -152,5 +153,17 @@ export class ApiTasks extends Helper {
     expect(response.ok()).toBeTruthy();
     expect(response.status()).toBe(201);
     console.log('Booking successfully deleted!');
+  }
+
+  /**
+   * Method validates that booking doesn't exist in database
+   * @param petId - Desired bookingId
+   * @param token - auth token
+   */
+  async validateBookingDeletion(bookingId: number, token: string) {
+    URL = `${BASE_URL}/booking/${bookingId}`;
+    response = await (await request.newContext()).get(URL, { headers: await generateCookieHeaders(token) });
+    expect(response.status()).toBe(404);
+    console.log('Booking does not exist in database!');
   }
 }

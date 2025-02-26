@@ -72,5 +72,6 @@ test.describe('Pet CRUD operations', () => {
     //DELETE request for removing previously created booking
     console.log('------- Deleting created booking -------');
     await apiTasks.deleteBookingById(bookingId, authToken);
+    await apiTasks.validateBookingDeletion(bookingId, authToken);
   });
 });
